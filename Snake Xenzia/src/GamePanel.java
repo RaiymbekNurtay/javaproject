@@ -28,7 +28,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		this.setPreferredSize(new Dimension(Screen_width, Screen_height));		//Size of the screen
 		this.setBackground(Color.black);		//background color of the screen
 		this.setFocusable(true);			//set focus
-		this.addKeyListener(new MyKeyAdapter());		
+		this.addKeyListener(new MyKeyAdapter());	
 		startGame();
 	}
 	
@@ -46,22 +46,27 @@ public class GamePanel extends JPanel implements ActionListener{
 	}
 	
 	public void draw(Graphics g) {
-		for(int i=0; i<Screen_height/Unit_size; i++) {
-			g.drawLine(i*Unit_size, 0, i*Unit_size, Screen_height);  //making grid
-			g.drawLine(0, i*Unit_size, Screen_width, i*Unit_size);	 //making grid
+		if(running) {
+				for(int i=0; i<Screen_height/Unit_size; i++) {
+					g.drawLine(i*Unit_size, 0, i*Unit_size, Screen_height);  //making grid
+					g.drawLine(0, i*Unit_size, Screen_width, i*Unit_size);	 //making grid
+				}
+				g.setColor(Color.red);		//color of an apple
+				g.fillOval(appleX , appleY, Unit_size, Unit_size);		//Size of an apple
+				
+				for(int i=0; i<bodyParts; i++) {
+					if(i == 0) {
+						g.setColor(Color.green);
+						g.fillRect(x[i], y[i], Unit_size, Unit_size);
+					}
+					else {
+						g.setColor(new Color(45, 180, 0));
+						g.fillRect(x[i], y[i], Unit_size, Unit_size);
+					}
+				}
 		}
-		g.setColor(Color.red);		//color of an apple
-		g.fillOval(appleX , appleY, Unit_size, Unit_size);		//Size of an apple
-		
-		for(int i=0; i<bodyParts; i++) {
-			if(i == 0) {
-				g.setColor(Color.green);
-				g.fillRect(x[i], y[i], Unit_size, Unit_size);
-			}
-			else {
-				g.setColor(new Color(45, 180, 0));
-				g.fillRect(x[i], y[i], Unit_size, Unit_size);
-			}
+		else {
+			gameOver(g);
 		}
 	}
 	
@@ -94,7 +99,13 @@ public class GamePanel extends JPanel implements ActionListener{
 	}
 	
 	public void checkApple() {
-		
+		//checking if the coordinates of the head of the snake and apple are equal
+		if((x[0] == appleX) && (y[0] == appleY)) {
+			//if true than iincrease body parts and amount of apple eaten
+			bodyParts++;
+			applesEaten++;
+			newApple();
+		}
 	}
 	
 	public void checkCollisions() {
@@ -127,7 +138,12 @@ public class GamePanel extends JPanel implements ActionListener{
 	}
 	
 	public void gameOver(Graphics g) {
-		
+		//text
+		g.setColor(Color.YELLOW);
+		g.setFont(new Font("Oswald", Font.BOLD, 90));
+		//position of the font
+		FontMetrics metrics = getFontMetrics(g.getFont());
+		g.drawString("Game Over", (Screen_width - metrics.stringWidth("Game Over"))/2, (Screen_height/2));
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
