@@ -1,3 +1,6 @@
+import java.awt.Color;
+import java.awt.Graphics;
+
 import javax.swing.JFrame;
 
 public class GameFrame extends JFrame{
@@ -13,5 +16,4 @@ public class GameFrame extends JFrame{
 		this.setVisible(true);
 		this.setLocationRelativeTo(null); //location of the window
 	}
-
 }

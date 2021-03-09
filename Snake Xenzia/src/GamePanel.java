@@ -1,16 +1,17 @@
 import java.awt.*;			//to develop window-based apps
 import java.awt.event.*;	//provides interfaces and classes for dealing with different types of events
+
+//creates a new panel with flow layout
 import javax.swing.*;		//graphical user interface toolkit 
 import java.util.Random;	//to generate random numbers
-import javax.swing.JPanel;	//creates a new panel with flow layout
 
 public class GamePanel extends JPanel implements ActionListener{
 	
 	static final int Screen_width = 600; 	//width of the screen
 	static final int Screen_height = 600; 	//height of the screen
-	static final int Unit_size = 25; 	//each unit will have 25 pixel size
+	static final int Unit_size = 15; 	//each unit will have 25 pixel size
 	static final int Game_units = (Screen_width * Screen_height / Unit_size);	
-	static final int Delay = 75;		//speed of the snake
+	int Delay = 55;		//speed of the snake
 	final int x[] = new int[Game_units]; 	//x coordinates of the snake, game units because in cannot be bigger than screen
 	final int y[] = new int[Game_units]; 	//y coordinates of the snake
 	int bodyParts = 6;		//length of the snake
@@ -21,15 +22,17 @@ public class GamePanel extends JPanel implements ActionListener{
 	boolean running = false;		//is program running
 	Timer timer;
 	Random random;
+	JButton restart;
 	
 	//constructor
 	GamePanel(){
 		random = new Random();
-		this.setPreferredSize(new Dimension(Screen_width, Screen_height));		//Size of the screen
+		this.setPreferredSize(new Dimension(Screen_width, 700));		//Size of the screen
 		this.setBackground(Color.black);		//background color of the screen
 		this.setFocusable(true);			//set focus
-		this.addKeyListener(new MyKeyAdapter());	
+		this.addKeyListener(new MyKeyAdapter());				
 		startGame();
+		this.setBorder(BorderFactory.createMatteBorder(5, 5, 5, 5, Color.YELLOW));
 	}
 	
 	public void startGame() {
@@ -47,10 +50,7 @@ public class GamePanel extends JPanel implements ActionListener{
 	
 	public void draw(Graphics g) {
 		if(running) {
-				for(int i=0; i<Screen_height/Unit_size; i++) {
-					g.drawLine(i*Unit_size, 0, i*Unit_size, Screen_height);  //making grid
-					g.drawLine(0, i*Unit_size, Screen_width, i*Unit_size);	 //making grid
-				}
+				
 				g.setColor(Color.red);		//color of an apple
 				g.fillOval(appleX , appleY, Unit_size, Unit_size);		//Size of an apple
 				
@@ -64,6 +64,13 @@ public class GamePanel extends JPanel implements ActionListener{
 						g.fillRect(x[i], y[i], Unit_size, Unit_size);
 					}
 				}
+				
+				g.setColor(Color.YELLOW);
+				g.setFont(new Font("Oswald", Font.BOLD, 40));
+				//position of the font
+				FontMetrics metrics = getFontMetrics(g.getFont());
+				g.drawString("Score: " + applesEaten, (Screen_width - metrics.stringWidth("Score: " + applesEaten))/2, (650));
+				
 		}
 		else {
 			gameOver(g);
@@ -138,13 +145,15 @@ public class GamePanel extends JPanel implements ActionListener{
 	}
 	
 	public void gameOver(Graphics g) {
-		//text
-		g.setColor(Color.YELLOW);
-		g.setFont(new Font("Oswald", Font.BOLD, 90));
-		//position of the font
-		FontMetrics metrics = getFontMetrics(g.getFont());
-		g.drawString("Game Over", (Screen_width - metrics.stringWidth("Game Over"))/2, (Screen_height/2));
+	
+		
+			g.setColor(Color.YELLOW);
+			g.setFont(new Font("Oswald", Font.BOLD, 90));
+			//position of the font
+			FontMetrics metrics = getFontMetrics(g.getFont());
+			g.drawString("Game Over", (Screen_width - metrics.stringWidth("Game Over"))/2, (700/2));
 	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 	
