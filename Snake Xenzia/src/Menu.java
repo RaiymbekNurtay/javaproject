@@ -65,11 +65,13 @@ public class Menu implements ActionListener{
 		new GameFrame();
 		}
 		
+		if(e.getSource() == btn2) {
+			Leaderboard board = new Leaderboard();
+			board.repaint();
+		}
+		
 		if(e.getSource() == btn3) {
 		System.exit(0);
 		}
-			
-		
-	
 	}
 }

@@ -49,6 +49,11 @@ public class GamePanel extends JPanel implements ActionListener{
 	}
 	
 	public void draw(Graphics g) {
+		
+			g.setColor(Color.YELLOW);
+			g.drawLine(0, 600, 600, 600);
+		
+		
 		if(running) {
 				
 				g.setColor(Color.red);		//color of an apple
@@ -64,17 +69,29 @@ public class GamePanel extends JPanel implements ActionListener{
 						g.fillRect(x[i], y[i], Unit_size, Unit_size);
 					}
 				}
-				
-				g.setColor(Color.YELLOW);
-				g.setFont(new Font("Oswald", Font.BOLD, 40));
-				//position of the font
-				FontMetrics metrics = getFontMetrics(g.getFont());
-				g.drawString("Score: " + applesEaten, (Screen_width - metrics.stringWidth("Score: " + applesEaten))/2, (650));
-				
 		}
 		else {
 			gameOver(g);
+			
+			//creating button leaderboard
+			restart = new JButton("Main Menu");
+			//positioning the button
+			restart.setBounds(225, 400, 150, 70);
+			//attach the actionListener to the button
+			restart.addActionListener(this);
+			restart.setBackground(Color.blue);
+			restart.setFont(new Font("Comic Sans", Font.BOLD, 12));
+			//setting the font rgb color
+			restart.setForeground(new Color(250, 250, 250));
+			restart.setFocusable(false);
+			this.add(restart);
 		}
+		
+		g.setColor(Color.YELLOW);
+		g.setFont(new Font("Oswald", Font.BOLD, 40));
+		//position of the font
+		FontMetrics metrics = getFontMetrics(g.getFont());
+		g.drawString("Score: " + applesEaten, (Screen_width - metrics.stringWidth("Score: " + applesEaten))/2, (650));
 	}
 	
 	public void newApple() {		//generates the coordinates of new apple
@@ -138,7 +155,6 @@ public class GamePanel extends JPanel implements ActionListener{
 				if(y[0] > Screen_height) {
 					running = false;
 				}
-				
 		if(!running) {
 			timer.stop();
 		}
@@ -152,6 +168,8 @@ public class GamePanel extends JPanel implements ActionListener{
 			//position of the font
 			FontMetrics metrics = getFontMetrics(g.getFont());
 			g.drawString("Game Over", (Screen_width - metrics.stringWidth("Game Over"))/2, (700/2));
+			PostgreSqlConnect conn = new PostgreSqlConnect();
+			conn.connect(applesEaten);
 	}
 	
 	@Override
@@ -162,6 +180,12 @@ public class GamePanel extends JPanel implements ActionListener{
 			checkApple();
 			checkCollisions();
 		}
+		
+		if(e.getSource() == restart) {
+			new Menu();
+			this.setVisible(false);
+			}
+		
 		repaint();
 	}
 	
