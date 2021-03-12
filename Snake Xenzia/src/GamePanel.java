@@ -59,11 +59,14 @@ public class GamePanel extends JPanel implements ActionListener{
 				g.setColor(Color.red);		//color of an apple
 				g.fillOval(appleX , appleY, Unit_size, Unit_size);		//Size of an apple
 				
+				//draw bodyparts
 				for(int i=0; i<bodyParts; i++) {
 					if(i == 0) {
+						//color of the head
 						g.setColor(Color.green);
 						g.fillRect(x[i], y[i], Unit_size, Unit_size);
 					}
+						//color of the body
 					else {
 						g.setColor(new Color(45, 180, 0));
 						g.fillRect(x[i], y[i], Unit_size, Unit_size);
@@ -91,7 +94,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		g.setFont(new Font("Oswald", Font.BOLD, 40));
 		//position of the font
 		FontMetrics metrics = getFontMetrics(g.getFont());
-		g.drawString("Score: " + applesEaten, (Screen_width - metrics.stringWidth("Score: " + applesEaten))/2, (650));
+		g.drawString("Score: " + applesEaten*10, (Screen_width - metrics.stringWidth("Score: " + applesEaten))/2, (650));
 	}
 	
 	public void newApple() {		//generates the coordinates of new apple
@@ -129,6 +132,7 @@ public class GamePanel extends JPanel implements ActionListener{
 			bodyParts++;
 			applesEaten++;
 			newApple();
+		
 		}
 	}
 	
@@ -169,7 +173,7 @@ public class GamePanel extends JPanel implements ActionListener{
 			FontMetrics metrics = getFontMetrics(g.getFont());
 			g.drawString("Game Over", (Screen_width - metrics.stringWidth("Game Over"))/2, (700/2));
 			PostgreSqlConnect conn = new PostgreSqlConnect();
-			conn.connect(applesEaten);
+			conn.connect(applesEaten*10);
 	}
 	
 	@Override

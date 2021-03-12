@@ -47,6 +47,7 @@ public class Leaderboard extends JFrame implements ActionListener{
 				g.setFont(new Font("Oswald", Font.BOLD, 90));
 				//position of the font
 				FontMetrics metrics = getFontMetrics(g.getFont());
+				//leaderboard table
 				for(int i = 0; i < conn.scores.size(); i++) {
 					System.out.println(conn.scores.get(i));
 				}

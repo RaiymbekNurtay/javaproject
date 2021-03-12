@@ -67,7 +67,6 @@ public class Menu implements ActionListener{
 		
 		if(e.getSource() == btn2) {
 			Leaderboard board = new Leaderboard();
-			board.repaint();
 		}
 		
 		if(e.getSource() == btn3) {
